@@ -7,9 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-api": "cd store-api && npm install",
     "start-api": "cd store-api && node index.js",
-    "install-client": "cd store-client && npm install",
-    "build-client": "cd client && npm run build",
-    "start-client": "cd client && npm start"
+    "install-client": "cd store-client && npm install && npm run build",
+    "start-client": "cd store-client && npm start"
   },
   "repository": {
     "type": "git",
