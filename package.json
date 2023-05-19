@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/flavio-moraes/tcc-modulo-c/issues"
   },
-  "homepage": "https://github.com/flavio-moraes/tcc-modulo-c#readme"
+  "homepage": "https://github.com/flavio-moraes/tcc-modulo-c#readme",
+  "dependencies": {
+    "@emotion/react": "^11.11.0"
+  }
 }
