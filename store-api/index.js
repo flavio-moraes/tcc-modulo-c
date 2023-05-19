@@ -15,10 +15,8 @@ const passportSetup = require("./passportSetup");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
 const productRoute = require("./routes/product");
-const cartRoute = require("./routes/cart");
 const orderRoute = require("./routes/order");
 const categoryRoute = require("./routes/category");
-const checkoutRoute = require("./routes/checkout");
 const bodyParser = require("body-parser");
 
 mongoose
@@ -68,10 +66,8 @@ app.use("/images", express.static(process.env.IMG_UPLOAD_URL));
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/products", productRoute);
-app.use("/api/v1/carts", cartRoute);
 app.use("/api/v1/orders", orderRoute);
 app.use("/api/v1/categories", categoryRoute);
-app.use("/api/v1/checkout", checkoutRoute);
 
 server.listen(process.env.PORT || 5000, () => {
   console.log("Servidor Backend está rodando.");
