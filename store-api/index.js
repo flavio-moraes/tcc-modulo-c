@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 const cors = require("cors");
 var session = require("express-session");
+const MongoSessionStore = require("connect-mongo");
 const { Server } = require("socket.io");
 const { createServer } = require("http");
 
@@ -19,9 +20,12 @@ const orderRoute = require("./routes/order");
 const categoryRoute = require("./routes/category");
 const bodyParser = require("body-parser");
 
-mongoose
+const mongoClientPromisse = mongoose
   .connect(process.env.MONGO_URL)
-  .then((res) => console.log(`Conexão ao BD bem sucedida. ${res}`))
+  .then((res) => {
+    console.log(`Conexão ao BD bem sucedida. ${res}`);
+    return res.connection.getClient();
+  })
   .catch((err) => console.log(`Falha na conexão com o BD. ${err}`));
 
 app.use(
@@ -40,6 +44,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     name: "sessionId",
+    store: MongoSessionStore.create({
+      clientPromise: mongoClientPromisse,
+    }),
   })
 );
 

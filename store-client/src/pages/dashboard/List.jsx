@@ -379,6 +379,7 @@ const List = ({ type }) => {
       headerName: "Data:",
       width: 100,
       valueGetter: function (params) {
+        if (!params.row.createdAt) return null;
         return new Date(params.row.createdAt).toLocaleDateString("pt-BR");
       },
     },
@@ -392,7 +393,7 @@ const List = ({ type }) => {
         return (
           "R$ " +
           params.row.amount
-            .toFixed(2)
+            ?.toFixed(2)
             .replace(".", ",")
             .replace(/\d(?=(\d{3})+\,)/g, "$&.")
         );
@@ -427,6 +428,7 @@ const List = ({ type }) => {
           approved: "Aprovado",
           pending: "Pendente",
           canceled: "Cancelado",
+          undefined: "",
         };
         return map[params.row.status];
       },
