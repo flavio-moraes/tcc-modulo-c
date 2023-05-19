@@ -1,0 +1,25 @@
+{
+  "name": "tcc-modulo-c",
+  "version": "1.0.0",
+  "description": "Projeto de TCC do Curso  de Pós-graduação em Desenvolvimento Web Full-Stack pela PUC-Minas, que consiste em uma aplicação de loja virtual para realização de compras online.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-api": "cd store-api && npm install",
+    "start-api": "cd store-api && npm start",
+    "install-client": "cd store-client && npm install",
+    "build-client": "cd client && npm run build",
+    "start-client": "cd client && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flavio-moraes/tcc-modulo-c.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flavio-moraes/tcc-modulo-c/issues"
+  },
+  "homepage": "https://github.com/flavio-moraes/tcc-modulo-c#readme"
+}
