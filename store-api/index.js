@@ -9,6 +9,7 @@ var session = require("express-session");
 const MongoSessionStore = require("connect-mongo");
 const { Server } = require("socket.io");
 const { createServer } = require("http");
+const path = require("path");
 
 dotenv.config();
 const passportSetup = require("./passportSetup");
@@ -19,6 +20,8 @@ const productRoute = require("./routes/product");
 const orderRoute = require("./routes/order");
 const categoryRoute = require("./routes/category");
 const bodyParser = require("body-parser");
+
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 const mongoClientPromisse = mongoose
   .connect(process.env.MONGO_URL)
@@ -189,6 +192,14 @@ app.use("/api/v1/users", userRoute);
 app.use("/api/v1/products", productRoute);
 app.use("/api/v1/orders", orderRoute);
 app.use("/api/v1/categories", categoryRoute);
+
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "/store-client/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.join(__dirname, "/store-client/build/index.html"))
+  );
+}
 
 server.listen(process.env.PORT || 5000, () => {
   console.log("Servidor Backend está rodando.");
