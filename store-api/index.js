@@ -38,18 +38,18 @@ app.use(
 
 app.use(express.json());
 
-//app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SEC,
     resave: false,
     saveUninitialized: false,
     name: "sessionId",
-    //proxy: true,
+    proxy: true,
     cookie: {
       secure: true,
       httpOnly: false,
-      sameSite: false,
+      sameSite: "none",
     },
     store: MongoSessionStore.create({
       clientPromise: mongoClientPromisse,
