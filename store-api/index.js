@@ -37,7 +37,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.cookie("teste1", "teste1", {
+  /*   res.cookie("teste1", "teste1", {
     domain: "lojavirtual-sprint2.vercel.app",
     path: "/",
     secure: true,
@@ -78,6 +78,63 @@ app.use((req, res, next) => {
     secure: true,
     httpOnly: true,
     sameSite: "none",
+  }); */
+  res.cookie("teste7", "teste7", {
+    domain: ".onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
+  res.cookie("teste8", "teste8", {
+    domain: "onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
+  res.cookie("teste9", "teste9", {
+    domain: ".onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: true,
+  });
+  res.cookie("teste10", "teste10", {
+    domain: "onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: true,
+  });
+  res.cookie("teste11", "teste11", {
+    domain: ".onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: false,
+  });
+  res.cookie("teste12", "teste12", {
+    domain: "onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: false,
+  });
+  res.cookie("teste13", "teste13", {
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
+  res.cookie("teste14", "teste14", {
+    secure: true,
+    httpOnly: true,
+    sameSite: true,
+  });
+  res.cookie("teste15", "teste15", {
+    secure: true,
+    httpOnly: true,
+    sameSite: false,
   });
   next();
 });
@@ -97,7 +154,7 @@ app.use(
     cookie: {
       secure: true,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: true,
       domain: process.env.DOMAIN_URL,
     },
     store: MongoSessionStore.create({

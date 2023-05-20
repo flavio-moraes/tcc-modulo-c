@@ -12,7 +12,7 @@ import { updateCart } from "./redux/cartSlice";
 import { isProduction } from "./utils";
 
 const _url = isProduction
-  ? "https://loja-virtual-modulo-c.onrender.com"
+  ? "https://lojavirtual-sprint2.onrender.com"
   : "http://localhost:5000";
 export const API_URL = _url + "/api/v1";
 export const SERVER_URL = _url;
