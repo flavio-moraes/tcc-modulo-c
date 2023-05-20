@@ -10,10 +10,14 @@ import axios from "axios";
 import io from "socket.io-client";
 import { updateCart } from "./redux/cartSlice";
 
-export const API_URL = "http://localhost:5000/api/v1";
-export const SERVER_URL = "http://localhost:5000";
-// export const API_URL = "https://loja-virtual-modulo-c.onrender.com/api/v1";
-// export const SERVER_URL = "https://loja-virtual-modulo-c.onrender.com";
+let _url;
+if (process && process.env.NODE_ENV === "development") {
+  _url = "http://localhost:5000";
+} else {
+  _url = "https://loja-virtual-modulo-c.onrender.com";
+}
+export const API_URL = _url + "/api/v1";
+export const SERVER_URL = _url;
 
 export const publicRequest = axios.create({
   baseURL: API_URL,
