@@ -9,13 +9,11 @@ import {
 import axios from "axios";
 import io from "socket.io-client";
 import { updateCart } from "./redux/cartSlice";
+import { isProduction } from "./utils";
 
-let _url;
-if (process && process.env.NODE_ENV === "development") {
-  _url = "http://localhost:5000";
-} else {
-  _url = "https://loja-virtual-modulo-c.onrender.com";
-}
+const _url = isProduction
+  ? "https://loja-virtual-modulo-c.onrender.com"
+  : "http://localhost:5000";
 export const API_URL = _url + "/api/v1";
 export const SERVER_URL = _url;
 
