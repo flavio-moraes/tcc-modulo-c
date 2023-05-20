@@ -38,28 +38,42 @@ app.use(
 
 app.use((req, res, next) => {
   res.cookie("teste1", "teste1", {
-    domain: ".vercel.app",
+    domain: "lojavirtual-sprint2.vercel.app",
     path: "/",
     secure: true,
     httpOnly: true,
     sameSite: "none",
   });
   res.cookie("teste2", "teste2", {
-    domain: "vercel.app",
+    domain: "https://lojavirtual-sprint2.vercel.app",
     path: "/",
     secure: true,
     httpOnly: true,
     sameSite: "none",
   });
   res.cookie("teste3", "teste3", {
-    domain: ".onrender.com",
+    domain: "loja-virtual-modulo-c.onrender.com",
     path: "/",
     secure: true,
     httpOnly: true,
     sameSite: "none",
   });
   res.cookie("teste4", "teste4", {
-    domain: "onrender.com",
+    domain: "https://loja-virtual-modulo-c.onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
+  res.cookie("teste5", "teste5", {
+    domain: ".lojavirtual-sprint2.vercel.app",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
+  res.cookie("teste6", "teste6", {
+    domain: ".loja-virtual-modulo-c.onrender.com",
     path: "/",
     secure: true,
     httpOnly: true,
