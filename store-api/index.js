@@ -38,16 +38,16 @@ app.use(
 
 app.use(express.json());
 
-app.set("trust proxy", 1);
+//app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SEC,
     resave: false,
     saveUninitialized: false,
     name: "sessionId",
-    proxy: true,
+    //proxy: true,
     cookie: {
-      secure: "auto",
+      secure: true,
       httpOnly: false,
       sameSite: false,
     },
