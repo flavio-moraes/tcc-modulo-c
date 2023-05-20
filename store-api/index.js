@@ -37,9 +37,34 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.cookie("teste1", "teste1", {
+    domain: ".vercel.app",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
+  res.cookie("teste2", "teste2", {
+    domain: "vercel.app",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
+  res.cookie("teste3", "teste3", {
+    domain: ".onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
+  res.cookie("teste4", "teste4", {
+    domain: "onrender.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+  });
   next();
 });
 

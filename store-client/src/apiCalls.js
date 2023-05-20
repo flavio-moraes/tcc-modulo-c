@@ -44,7 +44,7 @@ export const login = async (user) => {
     dispatch(loginSuccess(res.data.user));
     dispatch(updateCart(res.data));
   } catch (err) {
-    const code = err.response.data.code || 0;
+    const code = err.response?.data.code || 0;
     dispatch(loginFailure(code));
   }
 };
@@ -55,7 +55,7 @@ export const register = async (user) => {
     const res = await privateRequest.post("/auth/register", user);
     dispatch(loginSuccess(res.data));
   } catch (err) {
-    const code = err.response.data.code || 0;
+    const code = err.response?.data.code || 0;
     dispatch(loginFailure(code));
   }
 };
@@ -119,7 +119,7 @@ export const createUser = async (formData) => {
     const res = await privateRequestUpload.post("/users", formData);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -128,7 +128,7 @@ export const updateUser = async (id, formData) => {
     const res = await privateRequestUpload.put("/users/" + id, formData);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -137,7 +137,7 @@ export const deleteUser = async (id) => {
     const res = await privateRequest.delete("/users/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -146,7 +146,7 @@ export const getUser = async (id) => {
     const res = await privateRequest.get("/users/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -155,7 +155,7 @@ export const getAllUsers = async () => {
     const res = await privateRequest.get("/users/");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -167,7 +167,7 @@ export const addUserFavorite = async (userId, favId) => {
     dispatch(setFavorites(res.data.favorites));
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -179,7 +179,7 @@ export const removeUserFavorite = async (userId, favId) => {
     dispatch(setFavorites(res.data.favorites));
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -188,7 +188,7 @@ export const updateUserCart = async (id, cart) => {
     const res = await privateRequest.put("/users/cart/" + id, cart);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -197,7 +197,7 @@ export const createProduct = async (formData) => {
     const res = await privateRequestUpload.post("/products", formData);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -206,7 +206,7 @@ export const updateProduct = async (id, formData) => {
     const res = await privateRequestUpload.put("/products/" + id, formData);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -215,7 +215,7 @@ export const getProduct = async (id) => {
     const res = await publicRequest.get("/products/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -224,7 +224,7 @@ export const getAllProducts = async () => {
     const res = await publicRequest.get("/products/");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -233,7 +233,7 @@ export const deleteProduct = async (id) => {
     const res = await privateRequest.delete("/products/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -242,7 +242,7 @@ export const getProductsBySearch = async (keywords) => {
     const res = await publicRequest.get("/products?search=" + keywords);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -251,7 +251,7 @@ export const getProductsByCategory = async (categories) => {
     const res = await publicRequest.get("/products?category=" + categories);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -260,7 +260,7 @@ export const getProductsRandom = async (n) => {
     const res = await publicRequest.get("/products?random=" + n);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -269,7 +269,7 @@ export const createCategory = async (data) => {
     const res = await privateRequest.post("/categories/", data);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -278,7 +278,7 @@ export const deleteCategory = async (id) => {
     const res = await privateRequest.delete("/categories/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -287,7 +287,7 @@ export const getAllCategories = async () => {
     const res = await publicRequest.get("/categories/");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -296,7 +296,7 @@ export const createOrder = async (data) => {
     const res = await privateRequest.post("/orders/", data);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -305,7 +305,7 @@ export const updateOrder = async (id, data) => {
     const res = await privateRequest.put("/orders/" + id, data);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -314,7 +314,7 @@ export const deleteOrder = async (id) => {
     const res = await privateRequest.delete("/orders/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -323,7 +323,7 @@ export const getOrder = async (id) => {
     const res = await privateRequest.get("/orders/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -332,7 +332,7 @@ export const getAllOrders = async () => {
     const res = await privateRequest.get("/orders/");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -341,7 +341,7 @@ export const getOrdersFromUser = async (id) => {
     const res = await privateRequest.get("/orders/user/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -350,7 +350,7 @@ export const getStatsUserCount = async () => {
     const res = await privateRequest.get("/users/stats");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -359,7 +359,7 @@ export const getStatsUserCountPastMonths = async (n) => {
     const res = await privateRequest.get("/users/stats?months=" + n);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -368,7 +368,7 @@ export const getStatsProductsCount = async () => {
     const res = await privateRequest.get("/products/stats");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -377,7 +377,7 @@ export const getStatsProductsCountPastMonths = async (n) => {
     const res = await privateRequest.get("/products/stats?months=" + n);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -386,7 +386,7 @@ export const getStatsOrdersIncome = async () => {
     const res = await privateRequest.get("/orders/stats/income");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -395,7 +395,7 @@ export const getStatsOrdersIncomePastMonths = async (n) => {
     const res = await privateRequest.get("/orders/stats/income?months=" + n);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -404,7 +404,7 @@ export const getStatsOrdersSalesCount = async () => {
     const res = await privateRequest.get("/orders/stats/sales");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -413,7 +413,7 @@ export const getStatsOrdersSalesCountPastMonths = async (n) => {
     const res = await privateRequest.get("/orders/stats/sales?months=" + n);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -422,7 +422,7 @@ export const getStatsOrdersIncomeFromUser = async (id) => {
     const res = await privateRequest.get("/orders/stats/income/user/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -433,7 +433,7 @@ export const getStatsOrdersIncomeFromUserPastMonths = async (id, n = 0) => {
     );
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -442,7 +442,7 @@ export const getStatsOrdersSalesCountFromUser = async (id) => {
     const res = await privateRequest.get("/orders/stats/sales/user/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -453,7 +453,7 @@ export const getStatsOrdersSalesCountFromUserPastMonths = async (id, n = 0) => {
     );
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -462,7 +462,7 @@ export const getStatsSalesCountOfProduct = async (id) => {
     const res = await privateRequest.get("/orders/stats/sales/product/" + id);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -473,7 +473,7 @@ export const getStatsSalesCountOfProductPastMonths = async (id, n = 0) => {
     );
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -482,7 +482,7 @@ export const getStatsVisitsCount = async () => {
     const res = await privateRequest.get("/auth/stats/visits");
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
 
@@ -491,6 +491,6 @@ export const getStatsVisitsCountPastMonths = async (n) => {
     const res = await privateRequest.get("/auth/stats/visits?months=" + n);
     return res.data;
   } catch (err) {
-    throw new Error(err.response.data.msg);
+    throw new Error(err.response?.data.msg);
   }
 };
