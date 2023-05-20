@@ -28,9 +28,6 @@ const mongoClientPromisse = mongoose
   })
   .catch((err) => console.log(`Falha na conexão com o BD. ${err}`));
 
-app.enable("trust proxy");
-app.set("trust proxy", 1);
-
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -38,6 +35,17 @@ app.use(
     credentials: true,
   })
 );
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.DOMAIN_URL);
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  next();
+});
+
+app.enable("trust proxy");
+app.set("trust proxy", 1);
 
 app.use(express.json());
 
@@ -50,7 +58,7 @@ app.use(
     proxy: true,
     cookie: {
       secure: true,
-      httpOnly: false,
+      httpOnly: true,
       sameSite: "none",
     },
     store: MongoSessionStore.create({
