@@ -28,6 +28,9 @@ const mongoClientPromisse = mongoose
   })
   .catch((err) => console.log(`Falha na conexão com o BD. ${err}`));
 
+app.enable("trust proxy");
+app.set("trust proxy", 1);
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -38,13 +41,12 @@ app.use(
 
 app.use(express.json());
 
-app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SEC,
     resave: false,
     saveUninitialized: false,
-    name: "sessionId",
+    name: "sessionId-tccstorec",
     proxy: true,
     cookie: {
       secure: true,
