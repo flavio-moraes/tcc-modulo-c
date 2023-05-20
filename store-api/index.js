@@ -42,10 +42,17 @@ app.use(
   session({
     secret: process.env.SESSION_SEC,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     name: "sessionId",
+    //proxy: true,
+    cookie: {
+      secure: "auto",
+      httpOnly: false,
+      sameSite: false,
+    },
     store: MongoSessionStore.create({
       clientPromise: mongoClientPromisse,
+      ttl: 1 * 60 * 60,
     }),
   })
 );
