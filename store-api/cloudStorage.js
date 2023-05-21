@@ -3,6 +3,7 @@ const CryptoJS = require("crypto-js");
 const { Storage } = require("@google-cloud/storage");
 const crypto = require("crypto");
 const { format } = require("util");
+const path = require("path");
 
 const saveCredentialsToFile = (data) => {
   let jsonData;
@@ -21,8 +22,10 @@ const saveCredentialsToFile = (data) => {
   );
 };
 
-const getCredentialsFromFile = (filename) => {
-  const encryptedContent = fs.readFileSync(filename, "utf8");
+const getCredentialsFromFile = (fileName) => {
+  const filePath = path.join(__dirname, fileName);
+  console.log("filePath: ", filePath);
+  const encryptedContent = fs.readFileSync(filePath, "utf8");
   const decryptedData = CryptoJS.AES.decrypt(
     encryptedContent,
     process.env.PASS_SEC
@@ -32,7 +35,7 @@ const getCredentialsFromFile = (filename) => {
 };
 
 const storage = new Storage({
-  credentials: getCredentialsFromFile("./gcs.cred"),
+  credentials: getCredentialsFromFile("gcs.cred"),
 });
 
 const bucket = storage.bucket(process.env.BUCKET);
