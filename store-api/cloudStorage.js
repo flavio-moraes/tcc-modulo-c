@@ -32,7 +32,7 @@ const getCredentialsFromFile = (filename) => {
 };
 
 const storage = new Storage({
-  credentials: getCredentialsFromFile("gcs.cred"),
+  credentials: getCredentialsFromFile("./gcs.cred"),
 });
 
 const bucket = storage.bucket(process.env.BUCKET);
