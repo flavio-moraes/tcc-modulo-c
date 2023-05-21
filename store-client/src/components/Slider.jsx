@@ -5,10 +5,11 @@ import styled from "styled-components";
 import { sliderItems } from "../data";
 
 const Container = styled.div`
-  width: 100%;
+  width: calc(100vw - (var(--scrollbar-width, 0px)));
   min-height: 600px;
   display: flex;
   position: relative;
+  overflow: hidden;
 `;
 Container.displayName = "Slider";
 
@@ -109,6 +110,12 @@ const Button = styled.button`
 
 const Slider = () => {
   const [slideIndex, setSlideIndex] = useState(0);
+  const scrollbarWidth =
+    window.innerWidth - document.documentElement.clientWidth;
+  document.documentElement.style.setProperty(
+    "--scrollbar-width",
+    `${scrollbarWidth}px`
+  );
 
   const handleClick = (direction) => {
     if (direction === "left") {
