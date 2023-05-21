@@ -67,9 +67,9 @@ const cartSlice = createSlice({
     updateCart: (state, action) => {
       if (action.payload.cart == null) return;
       if (state.quantity !== 0) return;
-      state.items = action.payload.cart.items;
-      state.totalValue = action.payload.cart.totalValue;
-      state.quantity = action.payload.cart.quantity;
+      state.items = action.payload.cart.items || [];
+      state.totalValue = action.payload.cart.totalValue || 0;
+      state.quantity = action.payload.cart.quantity || 0;
     },
   },
 });

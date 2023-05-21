@@ -51,7 +51,9 @@ describe("App", () => {
         </Provider>
       );
 
-      expect(screen.getByText("carregando...")).toBeInTheDocument();
+      expect(
+        screen.getByText("Conectando-se ao servidor.")
+      ).toBeInTheDocument();
 
       await waitFor(() =>
         expect(screen.getByTestId("left-arrow")).toBeInTheDocument()
@@ -90,7 +92,9 @@ describe("App", () => {
         </Provider>
       );
 
-      expect(screen.getByText("carregando...")).toBeInTheDocument();
+      expect(
+        screen.getByText("Conectando-se ao servidor.")
+      ).toBeInTheDocument();
 
       await waitFor(() =>
         expect(screen.getByText(/Painel Administrativo/i)).toBeInTheDocument()

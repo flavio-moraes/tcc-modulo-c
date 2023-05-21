@@ -5,30 +5,34 @@ const {
   requireSelfOrAdminAuth,
   requireAdminOrManagerAuth,
 } = require("../authCheck");
+const { uploadImage, deleteImage } = require("../cloudStorage");
 const multer = require("multer");
-const uploader = multer({ dest: process.env.IMG_UPLOAD_URL });
-const fs = require("fs");
+const uploader = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
 
 router.post("/", requireAdminAuth, uploader.single("img"), (req, res, err) => {
   if (req.file && req.file.fieldname === "img") {
-    let fileType = req.file.mimetype.split("/")[1];
-    let filePath = req.file.destination + req.file.filename;
-    fs.rename(filePath, filePath + "." + fileType, async (err) => {
-      if (err) throw err;
-      req.body.image = req.file.filename + "." + fileType;
-
-      User.fCreate(req.body)
-        .then((user) => {
-          res.status(201).json(user);
-        })
-        .catch((error) => {
-          fs.unlink(filePath + "." + fileType, (err) => {
-            if (err) return;
+    uploadImage(req.file)
+      .then((res2) => {
+        req.body.image = res2;
+        User.fCreate(req.body)
+          .then((user) => {
+            res.status(201).json(user);
+          })
+          .catch((error) => {
+            deleteImage(req.body.image)
+              .then((res3) => {})
+              .catch((err3) => {});
+            let msg = error.haveMsg ? error.message : "Erro.";
+            res.status(500).json({ msg: msg, message: error?.message });
           });
-          let msg = error.haveMsg ? error.message : "Erro.";
-          res.status(500).json({ msg: msg, message: error?.message });
-        });
-    });
+      })
+      .catch((err2) => {
+        let msg = err2.haveMsg ? err2.message : "Erro.";
+        res.status(500).json({ msg: msg, message: err2?.message });
+      });
   } else {
     User.fCreate(req.body)
       .then((user) => {
@@ -41,11 +45,11 @@ router.post("/", requireAdminAuth, uploader.single("img"), (req, res, err) => {
   }
 });
 
-router.put("/cart/:id?", requireSelfOrAdminAuth, (req, res) => {
+router.put("/cart/:id?", (req, res) => {
   let id;
-  if (req.params.id) {
+  if (req.params.id && req.isAuthenticated() && req.user.role === "admin") {
     id = req.params.id;
-  } else if (req.user) {
+  } else if (req.isAuthenticated()) {
     id = req.user.id;
   } else {
     let msg = error.haveMsg ? error.message : "Erro.";
@@ -68,37 +72,37 @@ router.put(
   (req, res, err) => {
     const lite = req.user.id === req.params.id;
     if (req.body.address) req.body.address = JSON.parse(req.body.address);
-
-    const deleteFile = (fileNameWithPath) => {
-      fs.unlink(fileNameWithPath, (err) => {
-        if (err) return;
-      });
-    };
-
     if (req.file && req.file.fieldname === "img") {
-      let fileType = req.file.mimetype.split("/")[1];
-      let filePath = req.file.destination + req.file.filename;
-      fs.rename(filePath, filePath + "." + fileType, async (err) => {
-        if (err) throw err;
-        req.body.image = req.file.filename + "." + fileType;
-
-        User.fUpdate(req.params.id, req.body, lite)
-          .then((response) => {
-            if (req.body?.removeimg)
-              deleteFile(process.env.IMG_UPLOAD_URL + req.body.removeimg);
-            res.status(201).json(response);
-          })
-          .catch((error) => {
-            deleteFile(filePath + "." + fileType);
-            let msg = error.haveMsg ? error.message : "Erro.";
-            res.status(500).json({ msg: msg, message: error?.message });
-          });
-      });
+      uploadImage(req.file)
+        .then((res2) => {
+          req.body.image = res2;
+          User.fUpdate(req.params.id, req.body, lite)
+            .then((response) => {
+              if (req.body?.removeimg)
+                deleteImage(req.body.removeimg)
+                  .then((res3) => {})
+                  .catch((err3) => {});
+              res.status(201).json(response);
+            })
+            .catch((error) => {
+              deleteImage(res2)
+                .then((res3) => {})
+                .catch((err3) => {});
+              let msg = error.haveMsg ? error.message : "Erro.";
+              res.status(500).json({ msg: msg, message: error?.message });
+            });
+        })
+        .catch((err2) => {
+          let msg = err2.haveMsg ? err2.message : "Erro.";
+          res.status(500).json({ msg: msg, message: err2?.message });
+        });
     } else {
       User.fUpdate(req.params.id, req.body, lite)
         .then((response) => {
           if (req.body?.removeimg)
-            deleteFile(process.env.IMG_UPLOAD_URL + req.body.removeimg);
+            deleteImage(req.body.removeimg)
+              .then((res3) => {})
+              .catch((err3) => {});
           res.status(201).json(response);
         })
         .catch((error) => {

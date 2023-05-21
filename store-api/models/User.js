@@ -27,8 +27,7 @@ function prepare(dbUser) {
   user.role = dbUser.role;
   user.favorites = dbUser.favorites;
   user.address = dbUser.address;
-  if (dbUser.image)
-    user.image = process.env.SERVER_URL + "/images/" + dbUser.image;
+  if (dbUser.image) user.image = process.env.STORAGE_URL + dbUser.image;
   return user;
 }
 

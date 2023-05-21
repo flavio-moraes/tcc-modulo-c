@@ -41,8 +41,7 @@ function prepare(dbEntry) {
   outEntry.description = dbEntry.description;
   outEntry.variants = dbEntry.variants;
   outEntry.categories = dbEntry.categories;
-  if (dbEntry.image)
-    outEntry.image = process.env.SERVER_URL + "/images/" + dbEntry.image;
+  if (dbEntry.image) outEntry.image = process.env.STORAGE_URL + dbEntry.image;
   outEntry.createdAt = dbEntry.createdAt;
   return outEntry;
 }
@@ -62,8 +61,7 @@ function deepPrepare(dbEntry) {
         return { id: el._id, title: el.title };
       })
     : [];
-  if (dbEntry.image)
-    outEntry.image = process.env.SERVER_URL + "/images/" + dbEntry.image;
+  if (dbEntry.image) outEntry.image = process.env.STORAGE_URL + dbEntry.image;
   outEntry.createdAt = dbEntry.createdAt;
   return outEntry;
 }

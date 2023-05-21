@@ -46,7 +46,7 @@ app.use(express.json());
 
 app.use(
   session({
-    secret: process.env.SESSION_SEC,
+    secret: process.env.PASS_SEC,
     resave: false,
     saveUninitialized: false,
     name: "sessionId-tccstorec",

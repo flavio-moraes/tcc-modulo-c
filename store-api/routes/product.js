@@ -1,9 +1,12 @@
 const router = require("express").Router();
 const Product = require("../models/Product");
 const { requireAdminOrManagerAuth } = require("../authCheck");
+const { uploadImage, deleteImage } = require("../cloudStorage");
 const multer = require("multer");
-const uploader = multer({ dest: process.env.IMG_UPLOAD_URL });
-const fs = require("fs");
+const uploader = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
 
 router.post(
   "/",
@@ -11,27 +14,28 @@ router.post(
   uploader.single("img"),
   (req, res, err) => {
     if (req.file && req.file.fieldname === "img") {
-      let fileType = req.file.mimetype.split("/")[1];
-      let filePath = req.file.destination + req.file.filename;
-      fs.rename(filePath, filePath + "." + fileType, async (err) => {
-        if (err) throw err;
-        req.body.image = req.file.filename + "." + fileType;
+      uploadImage(req.file)
+        .then((res2) => {
+          req.body.image = res2;
+          req.body.variants = JSON.parse(req.body.variants);
+          req.body.categories = JSON.parse(req.body.categories);
 
-        req.body.variants = JSON.parse(req.body.variants);
-        req.body.categories = JSON.parse(req.body.categories);
-
-        Product.fCreate(req.body)
-          .then((response) => {
-            res.status(201).json(response);
-          })
-          .catch((error) => {
-            fs.unlink(filePath + "." + fileType, (err) => {
-              if (err) return;
+          Product.fCreate(req.body)
+            .then((response) => {
+              res.status(201).json(response);
+            })
+            .catch((error) => {
+              deleteImage(req.body.image)
+                .then((res3) => {})
+                .catch((err3) => {});
+              let msg = error.haveMsg ? error.message : "Erro.";
+              res.status(500).json({ msg: msg, message: error?.message });
             });
-            let msg = error.haveMsg ? error.message : "Erro.";
-            res.status(500).json({ msg: msg, message: error?.message });
-          });
-      });
+        })
+        .catch((err2) => {
+          let msg = err2.haveMsg ? err2.message : "Erro.";
+          res.status(500).json({ msg: msg, message: err2?.message });
+        });
     } else {
       req.body.variants = JSON.parse(req.body.variants);
       req.body.categories = JSON.parse(req.body.categories);
@@ -53,36 +57,35 @@ router.put(
   requireAdminOrManagerAuth,
   uploader.single("img"),
   (req, res, err) => {
-    const deleteFile = (fileNameWithPath) => {
-      fs.unlink(fileNameWithPath, (err) => {
-        if (err) return;
-      });
-    };
-
     if (req.file && req.file.fieldname === "img") {
-      let fileType = req.file.mimetype.split("/")[1];
-      let filePath = req.file.destination + req.file.filename;
-      fs.rename(filePath, filePath + "." + fileType, async (err) => {
-        if (err) throw err;
-        req.body.image = req.file.filename + "." + fileType;
+      uploadImage(req.file)
+        .then((res2) => {
+          req.body.image = res2;
+          if (req.body.variants)
+            req.body.variants = JSON.parse(req.body.variants);
+          if (req.body.categories)
+            req.body.categories = JSON.parse(req.body.categories);
 
-        if (req.body.variants)
-          req.body.variants = JSON.parse(req.body.variants);
-        if (req.body.categories)
-          req.body.categories = JSON.parse(req.body.categories);
-
-        Product.fUpdate(req.params.id, req.body)
-          .then((response) => {
-            if (req.body?.removeimg)
-              deleteFile(process.env.IMG_UPLOAD_URL + req.body.removeimg);
-            res.status(201).json(response);
-          })
-          .catch((error) => {
-            deleteFile(filePath + "." + fileType);
-            let msg = error.haveMsg ? error.message : "Erro.";
-            res.status(500).json({ msg: msg, message: error?.message });
-          });
-      });
+          Product.fUpdate(req.params.id, req.body)
+            .then((response) => {
+              if (req.body?.removeimg)
+                deleteImage(req.body.removeimg)
+                  .then((res3) => {})
+                  .catch((err3) => {});
+              res.status(201).json(response);
+            })
+            .catch((error) => {
+              deleteImage(res2)
+                .then((res3) => {})
+                .catch((err3) => {});
+              let msg = error.haveMsg ? error.message : "Erro.";
+              res.status(500).json({ msg: msg, message: error?.message });
+            });
+        })
+        .catch((err2) => {
+          let msg = err2.haveMsg ? err2.message : "Erro.";
+          res.status(500).json({ msg: msg, message: err2?.message });
+        });
     } else {
       if (req.body.variants) req.body.variants = JSON.parse(req.body.variants);
       if (req.body.categories)
@@ -91,7 +94,9 @@ router.put(
       Product.fUpdate(req.params.id, req.body)
         .then((response) => {
           if (req.body?.removeimg)
-            deleteFile(process.env.IMG_UPLOAD_URL + req.body.removeimg);
+            deleteImage(req.body.removeimg)
+              .then((res3) => {})
+              .catch((err3) => {});
           res.status(201).json(response);
         })
         .catch((error) => {

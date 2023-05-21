@@ -47,8 +47,7 @@ const prepare = async function (dbEntry) {
   outEntry.payment = dbEntry.payment;
   outEntry.products = dbEntry.products.map((entry) => {
     if (entry.productImage) {
-      entry.productImage =
-        process.env.SERVER_URL + "/images/" + entry.productImage;
+      entry.productImage = process.env.STORAGE_URL + entry.productImage;
       return entry;
     } else {
       delete entry.productImage;
