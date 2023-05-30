@@ -52,8 +52,7 @@ router.put("/cart/:id?", (req, res) => {
   } else if (req.isAuthenticated()) {
     id = req.user.id;
   } else {
-    let msg = error.haveMsg ? error.message : "Erro.";
-    return res.status(401).json({ msg: msg, message: error?.message });
+    return res.status(401).json({ msg: "Carrinho não salvo, requer autenticação." });
   }
   User.fCartUpdate(id, req.body)
     .then((response) => {

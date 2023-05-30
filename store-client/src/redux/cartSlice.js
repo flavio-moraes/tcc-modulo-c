@@ -35,7 +35,6 @@ const cartSlice = createSlice({
       }
     },
     removeCartItem: (state, action) => {
-      console.log(action.payload.index);
       if (action.payload.index == null) return;
       let deleted = state.items.splice(action.payload.index, 1)[0];
       state.totalValue -= deleted.variantPrice * deleted.quantity;
